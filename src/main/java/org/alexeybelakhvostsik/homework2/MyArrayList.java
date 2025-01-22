@@ -3,49 +3,79 @@ package org.alexeybelakhvostsik.homework2;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * Реализация упрощённого аналога ArrayList на Java.
+ *
+ * @param <T> тип элементов, хранящихся в списке
+ */
 public class MyArrayList<T> {
 
-    // Начальная вместимость по умолчанию
+    /**
+     * Начальная вместимость по умолчанию.
+     */
     private static final int DEFAULT_CAPACITY = 10;
 
-    //Массив для хранения элементов
+    /**
+     * Массив для хранения элементов списка.
+     */
     private Object[] elements;
 
-    //текущее колличество элементов в списке
+    /**
+     * Текущее количество элементов в списке.
+     */
     private int size;
 
-    //Конструктор который создает список с заданной вместимостью
+    /**
+     * Конструктор по умолчанию. Создаёт список с начальной вместимостью по умолчанию.
+     */
     public MyArrayList() {
         this.elements = new Object[DEFAULT_CAPACITY];
         this.size = 0;
     }
 
-    //Конструктор который создает список с заданной вместимостью
+    /**
+     * Конструктор с указанием начальной вместимости.
+     *
+     * @param initialCapacity начальная вместимость списка
+     * @throws IllegalArgumentException если начальная вместимость отрицательна
+     */
     public MyArrayList(int initialCapacity) {
         if ((initialCapacity < 0)) {
             throw new IllegalArgumentException("Недопустимое значение вместимости");
         }
-        this.elements = new Object[DEFAULT_CAPACITY];
+        this.elements = new Object[initialCapacity];
         this.size = 0;
     }
 
-    //Метод который проверяет нужно ли увеличить размер списка
+    /**
+     * Увеличивает вместимость списка, если это необходимо.
+     */
     private void ensureCapacity() {
         if (size == elements.length) {
             int newCapacity = elements.length * 2;  //Увеличиваем вместимость в 2 раза
             Object[] newElements = new Object[newCapacity]; //Копируем элементы из старого списка в новый
-            System.arraycopy(elements, 0, newElements, 0, elements.length);
+            System.arraycopy(elements, 0, newElements, 0, size);
             elements = newElements;  //Заменяем старый массив на новый
         }
     }
 
-    //Метод для добавления элемента в конец списка
+    /**
+     * Добавляет элемент в конец списка.
+     *
+     * @param element элемент для добавления
+     */
     public void add(T element) {
         ensureCapacity();  //Проверяем нужно ли увеличить размер списка
         elements[size++] = element; //Добавляем элемент и увеличиваем размер
     }
 
-    //Метод для добавленияэлемента по заданному индексу
+    /**
+     * Добавляет элемент на указанную позицию в списке.
+     *
+     * @param index   индекс, на который будет добавлен элемент
+     * @param element элемент для добавления
+     * @throws IndexOutOfBoundsException если индекс выходит за пределы списка
+     */
     public void add(int index, T element) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Недопустимый индекс");
@@ -56,7 +86,13 @@ public class MyArrayList<T> {
         size++;  //Инкрементируем размер
     }
 
-    //Метод для получения элемента по индексу
+    /**
+     * Возвращает элемент по указанному индексу.
+     *
+     * @param index индекс элемента
+     * @return элемент на указанной позиции
+     * @throws IndexOutOfBoundsException если индекс выходит за пределы списка
+     */
     @SuppressWarnings("unchecked")
     public T get(int index) {
         if (index < 0 || index >= size) {
@@ -65,18 +101,27 @@ public class MyArrayList<T> {
         return (T) elements[index]; //Возвращаем элемент приведенный к типу T
     }
 
-    //Удаление элемента по индексу
+    /**
+     * Удаляет элемент по указанному индексу.
+     *
+     * @param index индекс элемента для удаления
+     * @return удалённый элемент
+     * @throws IndexOutOfBoundsException если индекс выходит за пределы списка
+     */
     @SuppressWarnings("unchecked")
-    public void remove(int index) {
+    public T remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Недопустимый индекс");
         }
         T removedElement = get(index); //Получаем удаленный элемент
         System.arraycopy(elements, index + 1, elements, index, size - index - 1); //Сдвигаем элементы влево
         elements[--size] = null; //Устанавливаем значение null для освобождения памяти
+        return removedElement;
     }
 
-    //Метод для очистки списка
+    /**
+     * Очищает список, удаляя все элементы.
+     */
     public void clear() {
         for (int i = 0; i < size; i++) {
             elements[i] = null;  //Пробегаемся по всем элементам и устанавливаем значение null для освобождения памяти
@@ -84,13 +129,21 @@ public class MyArrayList<T> {
         size = 0;  //Делаем список пустым
     }
 
-    //Метод для сортировки списка
+    /**
+     * Сортирует список с использованием компаратора.
+     *
+     * @param comparator компаратор для определения порядка сортировки
+     */
     @SuppressWarnings("unchecked")
     public void sort(Comparator<? super Object> comparator) {
         Arrays.sort((T[]) elements, 0, size, comparator);  //Сортируем элементы
     }
 
-    //Переопределенный метод toString(),переписанный для корректного отображения списка
+    /**
+     * Возвращает строковое представление списка.
+     *
+     * @return строковое представление списка
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
