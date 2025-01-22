@@ -44,6 +44,7 @@ public class QuickSort {
     }
 
     // Метод для сравнения элементов
+    @SuppressWarnings("unchecked")
     private static <T> int compare(T a, T b, Comparator<? super T> comparator) {
         if (comparator != null) {
             return comparator.compare(a, b); // Используем Comparator, если он предоставлен

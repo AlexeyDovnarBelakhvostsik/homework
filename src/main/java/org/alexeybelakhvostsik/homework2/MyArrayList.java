@@ -105,18 +105,14 @@ public class MyArrayList<T> {
      * Удаляет элемент по указанному индексу.
      *
      * @param index индекс элемента для удаления
-     * @return удалённый элемент
      * @throws IndexOutOfBoundsException если индекс выходит за пределы списка
      */
-    @SuppressWarnings("unchecked")
-    public T remove(int index) {
+    public void remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Недопустимый индекс");
         }
-        T removedElement = get(index); //Получаем удаленный элемент
         System.arraycopy(elements, index + 1, elements, index, size - index - 1); //Сдвигаем элементы влево
         elements[--size] = null; //Устанавливаем значение null для освобождения памяти
-        return removedElement;
     }
 
     /**
