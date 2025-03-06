@@ -278,10 +278,9 @@ public class CustomHashMap<K, V> {
 
             // Если в текущем бакете больше нет элементов, переходим к следующему
             if (nextNode == null) {
-                currentBucket++;
-                while (currentBucket < capacity && buckets[currentBucket] == null) {
+                do {
                     currentBucket++;
-                }
+                } while (currentBucket < capacity && buckets[currentBucket] == null);
                 if (currentBucket < capacity) {
                     nextNode = buckets[currentBucket];
                 }
